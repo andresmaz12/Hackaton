@@ -60,7 +60,7 @@
         button:hover {
             background-color: #8b5a2b;
         }
-        .row {
+        .fila {
             display: flex;
             justify-content: center;
             gap: 15px;
@@ -97,14 +97,15 @@
         function cambiarEstadoMesa(event) {
             const mesa = event.currentTarget;
             const numeroMesa = mesa.getAttribute('data-numero');
+            const sillas = mesa.getAttribute('data-sillas');
             if (mesa.classList.contains('libre')) {
                 mesa.classList.remove('libre');
                 mesa.classList.add('ocupada');
-                mesa.innerText = `Mesa ${numeroMesa} Ocupada`;
+                mesa.innerText = `Mesa ${numeroMesa} Ocupada\nSillas: ${sillas}`;
             } else {
                 mesa.classList.remove('ocupada');
                 mesa.classList.add('libre');
-                mesa.innerText = `Mesa ${numeroMesa} Libre`;
+                mesa.innerText = `Mesa ${numeroMesa} Libre\nSillas: ${sillas}`;
             }
         }
 
@@ -116,13 +117,22 @@
             listaMesas.innerHTML = ''; // Limpiar mesas previas
 
             for (let i = 1; i <= totalMesas; i++) {
+                // Crear una nueva fila cada dos mesas
+                if (i % 2 === 1) {
+                    var fila = document.createElement('div');
+                    fila.className = 'fila';
+                    listaMesas.appendChild(fila);
+                }
+                
+                // Crear cada mesa con el número de mesa y sillas
                 const mesaDiv = document.createElement('div');
                 mesaDiv.className = 'mesa libre';
                 mesaDiv.setAttribute('data-numero', i);
+                mesaDiv.setAttribute('data-sillas', sillasPorMesa); // Guardar el número de sillas
                 mesaDiv.innerText = `Mesa ${i} Libre\nSillas: ${sillasPorMesa}`;
                 
                 mesaDiv.addEventListener('click', cambiarEstadoMesa);
-                listaMesas.appendChild(mesaDiv);
+                fila.appendChild(mesaDiv);
             }
         }
     </script>
