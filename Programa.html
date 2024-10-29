@@ -4,57 +4,82 @@
     <title>Disponibilidad de Mesas</title>
     <style>
         .mesa {
-            border: 2px solid brown; /* Simula el borde de madera */
-            border-radius: 10px; /* Esquinas redondeadas */
+            border: 2px solid brown;
+            border-radius: 10px;
             padding: 15px;
             margin: 10px;
             width: 150px;
             height: 80px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para darle profundidad */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
             text-align: center;
-            background-color: #f2f2f2; /* Color de madera claro */
-            cursor: pointer; /* Cambia el cursor al pasar por encima */
+            cursor: pointer;
+            color: white;
         }
 
         .ocupada {
-            background-color: #ffcccc; /* Color de rosa claro para indicar ocupada */
+            background-color: #ffcccc;
         }
 
         .libre {
-            background-color: #c8ffcc; /* Color de verde claro para indicar libre */
+            background-color: #c8ffcc; 
         }
     </style>
-    <script>
-        // Función para alternar el estado de la mesa
-        function cambiarEstadoMesa(event) {
-            const mesa = event.currentTarget; // Obtiene la mesa en la que se hizo clic
-            if (mesa.classList.contains('libre')) {
-                mesa.classList.remove('libre');
-                mesa.classList.add('ocupada');
-                mesa.innerText = "Mesa Ocupada"; // Cambia el texto
-            } else {
-                mesa.classList.remove('ocupada');
-                mesa.classList.add('libre');
-                mesa.innerText = "Mesa Libre"; // Cambia el texto
-            }
-        }
-
-        // Función para asignar el evento a cada mesa
-        window.onload = function() {
-            const mesas = document.querySelectorAll('.mesa'); // Selecciona todas las mesas
-            mesas.forEach(mesa => {
-                mesa.addEventListener('click', cambiarEstadoMesa); // Añade el evento de clic
-            });
-        }
-    </script>
 </head>
 <body>
     <h1>Disponibilidad de Mesas</h1>
 
-    <div class="mesa libre">Mesa 1</div>
-    <div class="mesa ocupada">Mesa 2</div>
-    <div class="mesa libre">Mesa 3</div>
-    <div class="mesa libre">Mesa 4</div>
-    <div class="mesa ocupada">Mesa 5</div>
+    <form id="formMesas">
+        <label for="totalMesas">Cantidad total de mesas:</label>
+        <input type="number" id="totalMesas" min="1" required><br><br>
+
+        <label for="sillasPorMesa">Número de sillas por mesa:</label>
+        <input type="number" id="sillasPorMesa" min="1" required><br><br>
+
+        <button type="button" onclick="generarMesas()">Generar Mesas</button>
+    </form>
+
+    <div id="listaMesas"></div>
+
+    <script>
+        function generarColorAleatorio() {
+            const letras = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letras[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function generarMesas() {
+            const totalMesas = document.getElementById('totalMesas').value;
+            const sillasPorMesa = document.getElementById('sillasPorMesa').value;
+            const listaMesas = document.getElementById('listaMesas');
+            
+            listaMesas.innerHTML = '';
+
+            for (let i = 1; i <= totalMesas; i++) {
+                const mesaDiv = document.createElement('div');
+                mesaDiv.className = 'mesa libre'; 
+                mesaDiv.style.backgroundColor = generarColorAleatorio();
+                mesaDiv.innerHTML = `Mesa ${i} <br> Sillas: ${sillasPorMesa}`;
+                
+                mesaDiv.addEventListener('click', cambiarEstadoMesa);
+                listaMesas.appendChild(mesaDiv);
+            }
+        }
+
+        function cambiarEstadoMesa(event) {
+            const mesa = event.currentTarget;
+            if (mesa.classList.contains('libre')) {
+                mesa.classList.remove('libre');
+                mesa.classList.add('ocupada');
+                mesa.innerText = "Mesa Ocupada";
+            } else {
+                mesa.classList.remove('ocupada');
+                mesa.classList.add('libre');
+                mesa.innerText = "Mesa Libre";
+            }
+        }
+    </script>
 </body>
 </html>
