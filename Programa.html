@@ -3,58 +3,114 @@
 <head>
     <title>Disponibilidad de Mesas</title>
     <style>
-        .mesa {
-            border: 2px solid brown; /* Simula el borde de madera */
-            border-radius: 10px; /* Esquinas redondeadas */
-            padding: 15px;
-            margin: 10px;
-            width: 150px;
-            height: 80px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para darle profundidad */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://principal.url.edu.gt/wp-content/uploads/2021/02/campus-quetzaltenango.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
-            background-color: #f2f2f2; /* Color de madera claro */
-            cursor: pointer; /* Cambia el cursor al pasar por encima */
         }
-
+        h1 {
+            color: #4b2e2e;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .mesa {
+            border: 2px solid #8b5a2b;
+            border-radius: 12px;
+            padding: 20px;
+            width: 160px;
+            height: 100px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            background-color: #f2d7b5;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .mesa:hover {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4);
+        }
         .ocupada {
-            background-color: #ffcccc; /* Color de rosa claro para indicar ocupada */
+            background-color: #ffb3b3;
+            color: #721c24;
         }
-
         .libre {
-            background-color: #c8ffcc; /* Color de verde claro para indicar libre */
+            background-color: #d4f7d4;
+            color: #155724;
+        }
+        .mesa.ocupada:hover {
+            background-color: #ff9e9e;
+        }
+        .mesa.libre:hover {
+            background-color: #c0e7c0;
+        }
+        .mesa::before {
+            font-size: 1.2em;
+            margin-right: 8px;
+            vertical-align: middle;
         }
     </style>
     <script>
-        // Función para alternar el estado de la mesa
         function cambiarEstadoMesa(event) {
-            const mesa = event.currentTarget; // Obtiene la mesa en la que se hizo clic
+            const mesa = event.currentTarget;
             if (mesa.classList.contains('libre')) {
                 mesa.classList.remove('libre');
                 mesa.classList.add('ocupada');
-                mesa.innerText = "Mesa Ocupada"; // Cambia el texto
+                mesa.innerText = "Mesa Ocupada";
             } else {
                 mesa.classList.remove('ocupada');
                 mesa.classList.add('libre');
-                mesa.innerText = "Mesa Libre"; // Cambia el texto
+                mesa.innerText = "Mesa Libre";
             }
         }
 
-        // Función para asignar el evento a cada mesa
         window.onload = function() {
-            const mesas = document.querySelectorAll('.mesa'); // Selecciona todas las mesas
+            const mesas = document.querySelectorAll('.mesa');
             mesas.forEach(mesa => {
-                mesa.addEventListener('click', cambiarEstadoMesa); // Añade el evento de clic
+                mesa.addEventListener('click', cambiarEstadoMesa);
             });
         }
     </script>
 </head>
 <body>
-    <h1>Disponibilidad de Mesas</h1>
-
-    <div class="mesa libre">Mesa 1</div>
-    <div class="mesa ocupada">Mesa 2</div>
-    <div class="mesa libre">Mesa 3</div>
-    <div class="mesa libre">Mesa 4</div>
-    <div class="mesa ocupada">Mesa 5</div>
+    <div class="container">
+        <h1>Disponibilidad de Mesas</h1>
+        <div class="row">
+            <div class="mesa libre">Mesa 1</div>
+            <div class="mesa ocupada">Mesa 2</div>
+        </div>
+        <div class="row">
+            <div class="mesa libre">Mesa 3</div>
+            <div class="mesa libre">Mesa 4</div>
+        </div>
+        <div class="row">
+            <div class="mesa ocupada">Mesa 5</div>
+        </div>
+    </div>
 </body>
 </html>
