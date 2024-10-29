@@ -1,7 +1,7 @@
 # Hackaton
 
 ## Participantes
-### Jorge Luis Villagran 
+### Jorge Luis Villagrán González
 ### Mario Andre Velasco
 ### Pablo Roberto Pastor Martinez 
 ### David Orozco
