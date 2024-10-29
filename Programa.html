@@ -31,6 +31,35 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
+        .formulario {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4b2e2e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #8b5a2b;
+        }
         .row {
             display: flex;
             justify-content: center;
@@ -63,54 +92,54 @@
             background-color: #d4f7d4;
             color: #155724;
         }
-        .mesa.ocupada:hover {
-            background-color: #ff9e9e;
-        }
-        .mesa.libre:hover {
-            background-color: #c0e7c0;
-        }
-        .mesa::before {
-            font-size: 1.2em;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
     </style>
     <script>
         function cambiarEstadoMesa(event) {
             const mesa = event.currentTarget;
+            const numeroMesa = mesa.getAttribute('data-numero');
             if (mesa.classList.contains('libre')) {
                 mesa.classList.remove('libre');
                 mesa.classList.add('ocupada');
-                mesa.innerText = "Mesa Ocupada";
+                mesa.innerText = `Mesa ${numeroMesa} Ocupada`;
             } else {
                 mesa.classList.remove('ocupada');
                 mesa.classList.add('libre');
-                mesa.innerText = "Mesa Libre";
+                mesa.innerText = `Mesa ${numeroMesa} Libre`;
             }
         }
 
-        window.onload = function() {
-            const mesas = document.querySelectorAll('.mesa');
-            mesas.forEach(mesa => {
-                mesa.addEventListener('click', cambiarEstadoMesa);
-            });
+        function generarMesas() {
+            const totalMesas = document.getElementById('totalMesas').value;
+            const sillasPorMesa = document.getElementById('sillasPorMesa').value;
+            const listaMesas = document.getElementById('listaMesas');
+            
+            listaMesas.innerHTML = ''; // Limpiar mesas previas
+
+            for (let i = 1; i <= totalMesas; i++) {
+                const mesaDiv = document.createElement('div');
+                mesaDiv.className = 'mesa libre';
+                mesaDiv.setAttribute('data-numero', i);
+                mesaDiv.innerText = `Mesa ${i} Libre\nSillas: ${sillasPorMesa}`;
+                
+                mesaDiv.addEventListener('click', cambiarEstadoMesa);
+                listaMesas.appendChild(mesaDiv);
+            }
         }
     </script>
 </head>
 <body>
     <div class="container">
         <h1>Disponibilidad de Mesas</h1>
-        <div class="row">
-            <div class="mesa libre">Mesa 1</div>
-            <div class="mesa ocupada">Mesa 2</div>
+        <div class="formulario">
+            <label for="totalMesas">Cantidad total de mesas:</label>
+            <input type="number" id="totalMesas" min="1" required><br>
+
+            <label for="sillasPorMesa">Número de sillas por mesa:</label>
+            <input type="number" id="sillasPorMesa" min="1" required><br>
+
+            <button type="button" onclick="generarMesas()">Generar Mesas</button>
         </div>
-        <div class="row">
-            <div class="mesa libre">Mesa 3</div>
-            <div class="mesa libre">Mesa 4</div>
-        </div>
-        <div class="row">
-            <div class="mesa ocupada">Mesa 5</div>
-        </div>
+        <div id="listaMesas"></div>
     </div>
 </body>
 </html>
