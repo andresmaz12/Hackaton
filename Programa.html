@@ -31,18 +31,48 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
-        .row {
+        .formulario {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            margin-top: 5px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4b2e2e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #8b5a2b;
+        }
+        .fila {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 15px;
         }
         .mesa {
+            position: relative;
             border: 2px solid #8b5a2b;
             border-radius: 12px;
             padding: 20px;
             width: 160px;
-            height: 100px;
+            height: 140px;
             box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
             text-align: center;
             background-color: #f2d7b5;
@@ -63,54 +93,101 @@
             background-color: #d4f7d4;
             color: #155724;
         }
-        .mesa.ocupada:hover {
-            background-color: #ff9e9e;
-        }
-        .mesa.libre:hover {
-            background-color: #c0e7c0;
-        }
-        .mesa::before {
-            font-size: 1.2em;
-            margin-right: 8px;
-            vertical-align: middle;
+        .input-sillas {
+            width: 60px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
     <script>
         function cambiarEstadoMesa(event) {
             const mesa = event.currentTarget;
+            const numeroMesa = mesa.getAttribute('data-numero');
+
             if (mesa.classList.contains('libre')) {
                 mesa.classList.remove('libre');
                 mesa.classList.add('ocupada');
-                mesa.innerText = "Mesa Ocupada";
             } else {
                 mesa.classList.remove('ocupada');
                 mesa.classList.add('libre');
-                mesa.innerText = "Mesa Libre";
+                mesa.querySelector('.input-sillas').value = '';
             }
+
+            actualizarTextoMesa(mesa);
         }
 
-        window.onload = function() {
-            const mesas = document.querySelectorAll('.mesa');
-            mesas.forEach(mesa => {
-                mesa.addEventListener('click', cambiarEstadoMesa);
-            });
+        function actualizarTextoMesa(mesa) {
+            const numeroMesa = mesa.getAttribute('data-numero');
+            const sillasTotales = parseInt(mesa.getAttribute('data-sillas'));
+            const sillasOcupadas = parseInt(mesa.getAttribute('data-sillas-ocupadas'));
+            const estado = mesa.classList.contains('ocupada') ? "Ocupada" : "Libre";
+
+            mesa.innerHTML = `Mesa ${numeroMesa} ${estado}<br>Sillas ocupadas: <input type="number" class="input-sillas" min="0" max="${sillasTotales}" placeholder="0" oninput="actualizarSillas(mesa, this.value)"/>/${sillasTotales}`;
+        }
+
+        function actualizarSillas(mesa, input) {
+            const sillasTotales = parseInt(mesa.getAttribute('data-sillas'));
+            let sillasOcupadas = parseInt(input.value);
+
+            if (isNaN(sillasOcupadas) || sillasOcupadas < 0) {
+                sillasOcupadas = 0;
+            } else if (sillasOcupadas > sillasTotales) {
+                sillasOcupadas = sillasTotales;
+            }
+
+            mesa.setAttribute('data-sillas-ocupadas', sillasOcupadas);
+            actualizarTextoMesa(mesa);
+        }
+
+        function generarMesas() {
+            const totalMesas = document.getElementById('totalMesas').value;
+            const sillasPorMesa = document.getElementById('sillasPorMesa').value;
+            const listaMesas = document.getElementById('listaMesas');
+            
+            listaMesas.innerHTML = '';
+
+            for (let i = 1; i <= totalMesas; i++) {
+                if (i % 2 === 1) {
+                    var fila = document.createElement('div');
+                    fila.className = 'fila';
+                    listaMesas.appendChild(fila);
+                }
+
+                const mesaDiv = document.createElement('div');
+                mesaDiv.className = 'mesa libre';
+                mesaDiv.setAttribute('data-numero', i);
+                mesaDiv.setAttribute('data-sillas', sillasPorMesa);
+                mesaDiv.setAttribute('data-sillas-ocupadas', 0);
+                mesaDiv.innerHTML = `Mesa ${i} Libre<br>Sillas ocupadas: <input type="number" class="input-sillas" min="0" max="${sillasPorMesa}" placeholder="0" oninput="actualizarSillas(mesaDiv, this.value)"/>/${sillasPorMesa}`;
+                
+                // Cambiamos el evento para que solo cambie el estado si no se hace clic en el input
+                mesaDiv.addEventListener('click', (event) => {
+                    if (event.target.tagName !== 'INPUT') {
+                        cambiarEstadoMesa(event);
+                    }
+                });
+
+                fila.appendChild(mesaDiv);
+            }
         }
     </script>
 </head>
 <body>
     <div class="container">
         <h1>Disponibilidad de Mesas</h1>
-        <div class="row">
-            <div class="mesa libre">Mesa 1</div>
-            <div class="mesa ocupada">Mesa 2</div>
+        <div class="formulario">
+            <label for="totalMesas">Cantidad total de mesas:</label>
+            <input type="number" id="totalMesas" min="1" required><br>
+
+            <label for="sillasPorMesa">Número de sillas por mesa:</label>
+            <input type="number" id="sillasPorMesa" min="1" required><br>
+
+            <button type="button" onclick="generarMesas()">Generar Mesas</button>
         </div>
-        <div class="row">
-            <div class="mesa libre">Mesa 3</div>
-            <div class="mesa libre">Mesa 4</div>
-        </div>
-        <div class="row">
-            <div class="mesa ocupada">Mesa 5</div>
-        </div>
+        <div id="listaMesas"></div>
     </div>
 </body>
 </html>
