@@ -15,5 +15,11 @@ en el area recreativa de la Universidad. El surigmiento de la idea, se debe a qu
     En este repositorio estara nuestro "codigo" en HTML, CSS y JavaScript, y al final de este documento se 
     encontrara un enlace a la pagina desarollada. 
 
+## Desarollo
+
+Se desarollo este proyecto, con un coidgo simple en HTML. Se realizaron varias pruebas usando el block de notas de windows como editor de texto hasta poder obtener una idea general de como debia lucir el proyecto. Una vez pasamos esa fase de pureba y concluimos en como se veria la idea, creamos un repositorio en Github. Comenzamos haciendo purebas de como se trabajaria con las distintas ramas. Una vez organizado el modelo de trabajo, tomamos ese codigo preeliminar en HTML y cada quien comenzo a trabajar en su parte. Una vez terminado decidimos que hosteariamos el proyecto, para ello utilzamos la herramienta de Vercel, vinculamos nuestro repositorio nos genero un enlace para el acceso al publico.
+
+    Enlace: https://hackaton-snowy.vercel.app/
+
 
 
